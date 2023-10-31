@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.flybuilder</groupId>
-	<artifactId>user-api</artifactId>
+	<artifactId>flybox</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>user-api</name>
+	<name>flybox</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>

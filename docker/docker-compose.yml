@@ -10,7 +10,7 @@ services:
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: itmo
+      POSTGRES_DB: flybox
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
