@@ -20,9 +20,4 @@ public interface FlyService {
 
     void deleteFly(Long id);
 
-    Fly convertToFly(FlyInfoRequest flyInfoRequest);
-
-    FlyInfoResponse convertToFlyInfoResponse(Fly fly);
-
-
 }

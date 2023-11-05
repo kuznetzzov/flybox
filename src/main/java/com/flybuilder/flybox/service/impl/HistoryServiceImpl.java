@@ -8,6 +8,7 @@ import com.flybuilder.flybox.model.dto.request.*;
 import com.flybuilder.flybox.model.dto.response.*;
 import com.flybuilder.flybox.model.enums.Status;
 import com.flybuilder.flybox.service.HistoryService;
+import com.flybuilder.flybox.utils.Converters;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -25,7 +26,7 @@ public class HistoryServiceImpl implements HistoryService {
 
     private final HistoryRepo historyRepo;
     private final ObjectMapper mapper;
-    private final FlyServiceImpl flyService;
+    private final Converters converters;
 
     private final String errNotFound = "History with id %d not found";
 
@@ -46,7 +47,7 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public List<HistoryInfoResponse> getAllHistories() {
         List<History> histories = historyRepo.findAll();
-        return histories.stream().map(this::convertToHistoryInfoResponse).collect(Collectors.toList());
+        return histories.stream().map(converters::convertToHistoryInfoResponse).collect(Collectors.toList());
     }
 
     @Override
@@ -89,27 +90,6 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public void deleteHistory(Long id) {
         historyRepo.deleteById(id);
-    }
-
-
-    public HistoryInfoResponse convertToHistoryInfoResponse(History history) {
-
-        HistoryInfoResponse response = HistoryInfoResponse.builder()
-                .id(history.getId())
-                .tail(history.getTail())
-                .ribbing(history.getRibbing())
-                .body(history.getBody())
-                .hackle(history.getHackle())
-                .wing(history.getWing())
-                .legs(history.getLegs())
-                .head(history.getHead())
-                .build();
-
-        // Преобразование мух
-        FlyInfoResponse flyInfoResponse = flyService.convertToFlyInfoResponse(history.getFly());
-        response.setFly(flyInfoResponse);
-
-        return response;
     }
 
     public History convertToHistory(HistoryInfoRequest request) {

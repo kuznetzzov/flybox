@@ -8,6 +8,7 @@ import com.flybuilder.flybox.model.dto.request.*;
 import com.flybuilder.flybox.model.dto.response.*;
 import com.flybuilder.flybox.model.enums.Status;
 import com.flybuilder.flybox.service.*;
+import com.flybuilder.flybox.utils.Converters;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -28,10 +29,7 @@ public class FlyServiceImpl implements FlyService {
     private final FlyRepo flyRepo;
     private final ObjectMapper mapper;
 
-    private final HistoryService historyService;
-    private final MaterialService materialService;
-    private final PlaceService placeService;
-    private final UserService userService;
+    private final Converters converters;
 
     private final String errNotFound = "Fly with id %d not found";
 
@@ -52,7 +50,7 @@ public class FlyServiceImpl implements FlyService {
     @Override
     public List<FlyInfoResponse> getAllFlies() {
         List<Fly> flies = flyRepo.findAll();
-        return flies.stream().map(this::convertToFlyInfoResponse).collect(Collectors.toList());
+        return flies.stream().map(converters::convertToFlyInfoResponse).collect(Collectors.toList());
     }
 
     @Override
@@ -93,46 +91,6 @@ public class FlyServiceImpl implements FlyService {
         flyRepo.deleteById(id);
     }
 
-
-    @Override
-    public FlyInfoResponse convertToFlyInfoResponse(Fly fly) {
-        FlyInfoResponse response = FlyInfoResponse.builder()
-                .id(fly.getId())
-                .name(fly.getName())
-                .flyType(fly.getFlyType())
-                .pic(fly.getPic())
-                .video(fly.getVideo())
-                .build();
-
-        // Преобразование историй
-        Set<HistoryInfoResponse> historyInfoResponses = fly.getHistories().stream()
-                .map(historyService::convertToHistoryInfoResponse)
-                .collect(Collectors.toSet());
-
-        // Преобразование материалов
-        Set<MaterialInfoResponse> materialInfoResponses = fly.getMaterials().stream()
-                .map(materialService::convertToMaterialInfoResponse)
-                .collect(Collectors.toSet());
-
-        // Преобразование мест
-        Set<PlaceInfoResponse> placeInfoResponses = fly.getPlaces().stream()
-                .map(placeService::convertToPlaceInfoResponse)
-                .collect(Collectors.toSet());
-
-        // Преобразование пользователей
-        Set<UserInfoResponse> userInfoResponses = fly.getUsers().stream()
-                .map(userService::convertToUserInfoResponse)
-                .collect(Collectors.toSet());
-
-        response.setRelatedHistories(historyInfoResponses);
-        response.setRelatedMaterials(materialInfoResponses);
-        response.setRelatedPlaces(placeInfoResponses);
-        response.setRelatedUsers(userInfoResponses);
-
-        return response;
-    }
-
-    @Override
     public Fly convertToFly(FlyInfoRequest flyInfoRequest) {
         Fly fly = new Fly();
         fly.setName(flyInfoRequest.getName());

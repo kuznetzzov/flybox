@@ -18,8 +18,4 @@ public interface HistoryService {
 
     void deleteHistory(Long id);
 
-    HistoryInfoResponse convertToHistoryInfoResponse(History history);
-
-    History convertToHistory(HistoryInfoRequest request);
-
 }

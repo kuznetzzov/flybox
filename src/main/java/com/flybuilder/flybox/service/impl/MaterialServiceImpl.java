@@ -10,6 +10,7 @@ import com.flybuilder.flybox.model.dto.response.MaterialInfoResponse;
 import com.flybuilder.flybox.model.enums.Status;
 import com.flybuilder.flybox.service.FlyService;
 import com.flybuilder.flybox.service.MaterialService;
+import com.flybuilder.flybox.utils.Converters;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +30,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     private final MaterialRepo materialRepo;
     private final ObjectMapper mapper;
-    private final FlyService flyService;
+    private final Converters converters;
 
     private final String errNotFound = "Material with id %d not found";
 
@@ -50,7 +51,7 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public List<MaterialInfoResponse> getAllMaterials() {
         List<Material> materials = materialRepo.findAll();
-        return materials.stream().map(this::convertToMaterialInfoResponse).collect(Collectors.toList());
+        return materials.stream().map(converters::convertToMaterialInfoResponse).collect(Collectors.toList());
     }
 
     @Override
@@ -91,28 +92,6 @@ public class MaterialServiceImpl implements MaterialService {
         materialRepo.deleteById(id);
     }
 
-
-    @Override
-    public MaterialInfoResponse convertToMaterialInfoResponse(Material material) {
-        MaterialInfoResponse response = MaterialInfoResponse.builder()
-                .id(material.getId())
-                .name(material.getName())
-                .description(material.getDescription())
-                .isAvaiable(material.getIsAvaiable())
-                .pic(material.getPic())
-                .build();
-
-        // Преобразование мух
-        Set<FlyInfoResponse> flyInfoResponses = material.getFlies().stream()
-                .map(flyService::convertToFlyInfoResponse)
-                .collect(Collectors.toSet());
-
-        response.setRelatedFlies(flyInfoResponses);
-
-        return response;
-    }
-
-    @Override
     public Material convertToMaterial(MaterialInfoRequest materialInfoRequest) {
         Material material = new Material();
         material.setName(materialInfoRequest.getName());

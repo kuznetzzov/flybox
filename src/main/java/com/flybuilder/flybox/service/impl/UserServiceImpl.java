@@ -10,6 +10,7 @@ import com.flybuilder.flybox.model.dto.response.UserInfoResponse;
 import com.flybuilder.flybox.model.enums.Status;
 import com.flybuilder.flybox.service.FlyService;
 import com.flybuilder.flybox.service.UserService;
+import com.flybuilder.flybox.utils.Converters;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepo userRepo;
     private final ObjectMapper mapper;
-    private final FlyService flyService;
+    private final Converters converters;
 
     private final String errNotFound = "User with id %d not found";
 
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserInfoResponse> getAllUsers() {
         List<User> users = userRepo.findAll();
-        return users.stream().map(this::convertToUserInfoResponse).collect(Collectors.toList());
+        return users.stream().map(converters::convertToUserInfoResponse).collect(Collectors.toList());
     }
 
     @Override
@@ -94,29 +95,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Override
-    public UserInfoResponse convertToUserInfoResponse(User user) {
-        UserInfoResponse response = UserInfoResponse.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .username(user.getUsername())
-                .age(user.getAge())
-                .gender(user.getGender())
-                .role(user.getRole())
-                .build();
-
-        // Преобразование мух
-        Set<FlyInfoResponse> flyInfoResponses = user.getFlies().stream()
-                .map(flyService::convertToFlyInfoResponse)
-                .collect(Collectors.toSet());
-
-        response.setRelatedFlies(flyInfoResponses);
-
-        return response;
-    }
-
-    @Override
     public User convertToUser(UserInfoRequest request) {
 
         User user = new User();
