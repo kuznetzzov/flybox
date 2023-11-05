@@ -19,9 +19,4 @@ public interface UserService {
 
     void deleteUser(Long id);
 
-    User convertToUser(UserInfoRequest userInfoRequest);
-
-    UserInfoResponse convertToUserInfoResponse(User user);
-
-
 }

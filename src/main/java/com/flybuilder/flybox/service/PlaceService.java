@@ -18,9 +18,4 @@ public interface PlaceService {
 
     void deletePlace(Long id);
 
-    Place convertToPlace(PlaceInfoRequest placeInfoRequest);
-
-    PlaceInfoResponse convertToPlaceInfoResponse(Place place);
-
-
 }

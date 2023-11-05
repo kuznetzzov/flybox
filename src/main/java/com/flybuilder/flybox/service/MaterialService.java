@@ -21,9 +21,4 @@ public interface MaterialService {
 
     void deleteMaterial(Long id);
 
-    Material convertToMaterial(MaterialInfoRequest materialInfoRequest);
-
-    MaterialInfoResponse convertToMaterialInfoResponse(Material material);
-
-
 }

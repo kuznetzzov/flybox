@@ -10,6 +10,7 @@ import com.flybuilder.flybox.model.dto.response.PlaceInfoResponse;
 import com.flybuilder.flybox.model.enums.Status;
 import com.flybuilder.flybox.service.FlyService;
 import com.flybuilder.flybox.service.PlaceService;
+import com.flybuilder.flybox.utils.Converters;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +30,8 @@ public class PlaceServiceImpl implements PlaceService {
 
     private final PlaceRepo placeRepo;
     private final ObjectMapper mapper;
-    private final FlyService flyService;
+    private final Converters converters;
+
 
     private final String errNotFound = "Material with id %d not found";
 
@@ -50,7 +52,7 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     public List<PlaceInfoResponse> getAllPlaces() {
         List<Place> places = placeRepo.findAll();
-        return places.stream().map(this::convertToPlaceInfoResponse).collect(Collectors.toList());
+        return places.stream().map(converters::convertToPlaceInfoResponse).collect(Collectors.toList());
     }
 
     @Override
@@ -91,28 +93,6 @@ public class PlaceServiceImpl implements PlaceService {
         placeRepo.deleteById(id);
     }
 
-
-    @Override
-    public PlaceInfoResponse convertToPlaceInfoResponse(Place place) {
-        PlaceInfoResponse response = PlaceInfoResponse.builder()
-                .id(place.getId())
-                .name(place.getName())
-                .coordinates(place.getCoordinates())
-                .flySinking(place.getFlySinking())
-                .isSalt(place.getIsSalt())
-                .build();
-
-        // Преобразование мух
-        Set<FlyInfoResponse> flyInfoResponses = place.getFlies().stream()
-                .map(flyService::convertToFlyInfoResponse)
-                .collect(Collectors.toSet());
-
-        response.setRelatedFlies(flyInfoResponses);
-
-        return response;
-    }
-
-    @Override
     public Place convertToPlace(PlaceInfoRequest placeInfoRequest) {
         Place place = new Place();
         place.setName(placeInfoRequest.getName());
