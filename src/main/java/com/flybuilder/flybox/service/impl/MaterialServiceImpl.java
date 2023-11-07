@@ -2,13 +2,11 @@ package com.flybuilder.flybox.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flybuilder.flybox.exceptions.CustomException;
-import com.flybuilder.flybox.model.db.entity.*;
+import com.flybuilder.flybox.model.db.entity.Material;
 import com.flybuilder.flybox.model.db.repository.MaterialRepo;
-import com.flybuilder.flybox.model.dto.request.*;
-import com.flybuilder.flybox.model.dto.response.FlyInfoResponse;
+import com.flybuilder.flybox.model.dto.request.MaterialInfoRequest;
 import com.flybuilder.flybox.model.dto.response.MaterialInfoResponse;
 import com.flybuilder.flybox.model.enums.Status;
-import com.flybuilder.flybox.service.FlyService;
 import com.flybuilder.flybox.service.MaterialService;
 import com.flybuilder.flybox.utils.Converters;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -32,14 +29,14 @@ public class MaterialServiceImpl implements MaterialService {
     private final ObjectMapper mapper;
     private final Converters converters;
 
-    private final String errNotFound = "Material with id %d not found";
+    private final String errNotFound = "Материал не найден";
 
     @Override
     public MaterialInfoResponse getMaterial(Long id) {
 
         MaterialInfoResponse response;
 
-        if (id != null) {
+        if (id != 0L) {
             Material material = materialRepo.findById(id).orElse(new Material());
             response = mapper.convertValue(material, MaterialInfoResponse.class);
         } else {
@@ -66,7 +63,7 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public MaterialInfoResponse updateMaterial(Long id, MaterialInfoRequest request) {
 
-        if (id == 0) {
+        if (id == 0L) {
             throw new CustomException(errNotFound, HttpStatus.NOT_FOUND);
         }
 

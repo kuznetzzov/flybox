@@ -31,14 +31,14 @@ public class FlyServiceImpl implements FlyService {
 
     private final Converters converters;
 
-    private final String errNotFound = "Fly with id %d not found";
+    private final String errNotFound = "Fly not found";
 
     @Override
     public FlyInfoResponse getFly(Long id) {
 
         FlyInfoResponse response;
 
-        if (id != null) {
+        if (id != 0L) {
             Fly fly = flyRepo.findById(id).orElse(new Fly());
             response = mapper.convertValue(fly, FlyInfoResponse.class);
         } else {
@@ -65,7 +65,7 @@ public class FlyServiceImpl implements FlyService {
     @Override
     public FlyInfoResponse updateFly(Long id, FlyInfoRequest request) {
 
-        if (id == 0) {
+        if (id == 0L) {
             throw new CustomException(errNotFound, HttpStatus.NOT_FOUND);
         }
 

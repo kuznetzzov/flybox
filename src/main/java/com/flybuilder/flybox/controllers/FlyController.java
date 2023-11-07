@@ -17,10 +17,10 @@ import java.util.List;
 public class FlyController {
 
     private final FlyService flyService;
-    private final static String errorStr = "Мушка с id %d не найдена";
+    private final static String errorStr = "Мушка не найдена";
 
     @GetMapping("/{id}")
-    @Operation(summary = "Получить мушку по id %d")
+    @Operation(summary = "Получить мушку по id")
     public FlyInfoResponse getFly(@PathVariable Long id) {
         return flyService.getFly(id);
     }

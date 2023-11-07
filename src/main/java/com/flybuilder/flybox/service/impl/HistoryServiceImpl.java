@@ -28,14 +28,14 @@ public class HistoryServiceImpl implements HistoryService {
     private final ObjectMapper mapper;
     private final Converters converters;
 
-    private final String errNotFound = "History with id %d not found";
+    private final String errNotFound = "Легенда не найдена";
 
     @Override
     public HistoryInfoResponse getHistory(Long id) {
 
         HistoryInfoResponse response;
 
-        if (id != null) {
+        if (id != 0L) {
             History history = historyRepo.findById(id).orElse(new History());
             response = mapper.convertValue(history, HistoryInfoResponse.class);
         } else {
@@ -62,7 +62,7 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public HistoryInfoResponse updateHistory(Long id, HistoryInfoRequest request) {
 
-        if (id == 0) {
+        if (id == 0L) {
             throw new CustomException(errNotFound, HttpStatus.NOT_FOUND);
         }
 
