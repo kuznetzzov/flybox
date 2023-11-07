@@ -32,14 +32,14 @@ public class UserServiceImpl implements UserService {
     private final ObjectMapper mapper;
     private final Converters converters;
 
-    private final String errNotFound = "User with id %d not found";
+    private final String errNotFound = "Пользователь не найден";
 
     @Override
     public UserInfoResponse getUser(Long id) {
 
         UserInfoResponse response;
 
-        if (id != null) {
+        if (id != 0L) {
             User user = userRepo.findById(id).orElse(new User());
             response = mapper.convertValue(user, UserInfoResponse.class);
         } else {
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfoResponse updateUser(Long id, UserInfoRequest request) {
 
-        if (id == 0) {
+        if (id == 0L) {
             throw new CustomException(errNotFound, HttpStatus.NOT_FOUND);
         }
 

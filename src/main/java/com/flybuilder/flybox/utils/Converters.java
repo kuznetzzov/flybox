@@ -1,19 +1,13 @@
 package com.flybuilder.flybox.utils;
 
-import com.flybuilder.flybox.model.db.entity.Fly;
-import com.flybuilder.flybox.model.db.entity.History;
-import com.flybuilder.flybox.model.db.entity.Material;
-import com.flybuilder.flybox.model.db.entity.Place;
-import com.flybuilder.flybox.model.db.entity.User;
-import com.flybuilder.flybox.model.dto.response.FlyInfoResponse;
-import com.flybuilder.flybox.model.dto.response.HistoryInfoResponse;
-import com.flybuilder.flybox.model.dto.response.MaterialInfoResponse;
-import com.flybuilder.flybox.model.dto.response.PlaceInfoResponse;
-import com.flybuilder.flybox.model.dto.response.UserInfoResponse;
+import com.flybuilder.flybox.model.db.entity.*;
+import com.flybuilder.flybox.model.dto.response.*;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 
 @Component
 public class Converters {
@@ -25,27 +19,40 @@ public class Converters {
                 .flyType(fly.getFlyType())
                 .pic(fly.getPic())
                 .video(fly.getVideo())
+                .status(fly.getStatus())
                 .build();
 
-        // Преобразование историй
-        Set<HistoryInfoResponse> historyInfoResponses = fly.getHistories().stream()
-                .map(this::convertToHistoryInfoResponse)
-                .collect(Collectors.toSet());
+        // Преобразование легенд
+        Set<HistoryInfoResponse> historyInfoResponses = new HashSet<>();
+        if(!fly.getHistories().isEmpty()) {
+            historyInfoResponses = fly.getHistories().stream()
+                    .map(this::convertToHistoryInfoResponse)
+                    .collect(Collectors.toSet());
+        }
 
         // Преобразование материалов
-        Set<MaterialInfoResponse> materialInfoResponses = fly.getMaterials().stream()
-                .map(this::convertToMaterialInfoResponse)
-                .collect(Collectors.toSet());
+        Set<MaterialInfoResponse> materialInfoResponses = new HashSet<>();
+        if(!fly.getMaterials().isEmpty()) {
+            materialInfoResponses = fly.getMaterials().stream()
+                    .map(this::convertToMaterialInfoResponse)
+                    .collect(Collectors.toSet());
+        }
 
         // Преобразование мест
-        Set<PlaceInfoResponse> placeInfoResponses = fly.getPlaces().stream()
-                .map(this::convertToPlaceInfoResponse)
-                .collect(Collectors.toSet());
+        Set<PlaceInfoResponse> placeInfoResponses = new HashSet<>();
+        if(!fly.getPlaces().isEmpty()) {
+            placeInfoResponses = fly.getPlaces().stream()
+                    .map(this::convertToPlaceInfoResponse)
+                    .collect(Collectors.toSet());
+        }
 
         // Преобразование пользователей
-        Set<UserInfoResponse> userInfoResponses = fly.getUsers().stream()
-                .map(this::convertToUserInfoResponse)
-                .collect(Collectors.toSet());
+        Set<UserInfoResponse> userInfoResponses = new HashSet<>();
+        if(!fly.getUsers().isEmpty()) {
+            userInfoResponses = fly.getUsers().stream()
+                    .map(this::convertToUserInfoResponse)
+                    .collect(Collectors.toSet());
+        }
 
         response.setRelatedHistories(historyInfoResponses);
         response.setRelatedMaterials(materialInfoResponses);

@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Histories")
+@Tag(name = "Легенды")
 @RestController
 @RequestMapping("/histories")
 @RequiredArgsConstructor
 public class HistoryController {
 
     private final HistoryService historyService;
-    private final static String errorStr = "Легенда по id %d не найдена";
+    private final static String errorStr = "Легенда не найдена";
 
     @GetMapping("/{id}")
     @Operation(summary = "Получить легенду по id")

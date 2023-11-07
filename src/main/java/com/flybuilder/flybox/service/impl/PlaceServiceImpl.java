@@ -33,14 +33,14 @@ public class PlaceServiceImpl implements PlaceService {
     private final Converters converters;
 
 
-    private final String errNotFound = "Material with id %d not found";
+    private final String errNotFound = "Водоём не найден";
 
     @Override
     public PlaceInfoResponse getPlace(Long id) {
 
         PlaceInfoResponse response;
 
-        if (id != null) {
+        if (id != 0L) {
             Place place = placeRepo.findById(id).orElse(new Place());
             response = mapper.convertValue(place, PlaceInfoResponse.class);
         } else {
@@ -67,7 +67,7 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     public PlaceInfoResponse updatePlace(Long id, PlaceInfoRequest request) {
 
-        if (id == 0) {
+        if (id == 0L) {
             throw new CustomException(errNotFound, HttpStatus.NOT_FOUND);
         }
 
