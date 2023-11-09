@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -51,7 +51,7 @@ class PlaceServiceImplTest {
     }
 
     @Test
-    public void testGetPlaceExistingPlace() {
+    void testGetPlaceExistingPlace() {
         Place existingPlace = new Place();
         existingPlace.setId(EXISTING_ID);
 
@@ -63,7 +63,7 @@ class PlaceServiceImplTest {
     }
 
     @Test
-    public void testGetPlaceWhenIdIsZero() {
+    void testGetPlaceWhenIdIsZero() {
         long id = 0L;
 
         try {
@@ -76,7 +76,7 @@ class PlaceServiceImplTest {
     }
 
     @Test
-    public void testGetPlaceNonExistingPlace() {
+    void testGetPlaceNonExistingPlace() {
         when(placeRepo.findById(NON_EXISTING_ID)).thenReturn(Optional.empty());
 
         CustomException exception = assertThrows(CustomException.class, () -> {
@@ -87,7 +87,7 @@ class PlaceServiceImplTest {
     }
 
     @Test
-    public void testGetAllPlaces() {
+    void testGetAllPlaces() {
         Place place1 = new Place();
         place1.setId(1L);
         Place place2 = new Place();
@@ -101,7 +101,7 @@ class PlaceServiceImplTest {
     }
 
     @Test
-    public void testCreatePlace() {
+    void testCreatePlace() {
 
         PlaceInfoRequest request = new PlaceInfoRequest();
         request.setName("Ладожское озеро");
@@ -121,19 +121,17 @@ class PlaceServiceImplTest {
 
 
     @Test
-    public void testUpdatePlace() {
+    void testUpdatePlace() {
         Place place = new Place();
         place.setId(1L);
         place.setName("Old Place");
         place.setCoordinates("Old Coordinates");
-        place.setFlySinking(0.0F);
         place.setIsSalt(false);
         place.setStatus(Status.CREATED);
 
         PlaceInfoRequest request = new PlaceInfoRequest();
         request.setName("New Place");
         request.setCoordinates("New Coordinates");
-        request.setFlySinking(0.0F);
         request.setIsSalt(true);
 
         when(placeRepo.findById(1L)).thenReturn(Optional.of(place));
@@ -148,13 +146,12 @@ class PlaceServiceImplTest {
         // Проверяем, что объект обновлен
         assertEquals("New Place", place.getName());
         assertEquals("New Coordinates", place.getCoordinates());
-        assertEquals(0.0F, place.getFlySinking());
         assertEquals(true, place.getIsSalt());
         assertEquals(Status.UPDATED, place.getStatus());
     }
 
     @Test
-    public void testUpdatePlaceWhenIdIsZero() {
+    void testUpdatePlaceWhenIdIsZero() {
         long id = 0L;
         PlaceInfoRequest request = new PlaceInfoRequest();
 
@@ -168,7 +165,7 @@ class PlaceServiceImplTest {
     }
 
     @Test
-    public void testUpdatePlaceWhenPlaceIsNull() {
+    void testUpdatePlaceWhenPlaceIsNull() {
         long id = 1L;
         PlaceInfoRequest request = new PlaceInfoRequest();
 
@@ -180,7 +177,7 @@ class PlaceServiceImplTest {
     }
 
     @Test
-    public void testDeletePlace() {
+    void testDeletePlace() {
         Long placeId = 1L;
 
         doNothing().when(placeRepo).deleteById(placeId);
@@ -191,7 +188,7 @@ class PlaceServiceImplTest {
     }
 
     @Test
-    public void testConvertToPlace() {
+    void testConvertToPlace() {
         PlaceInfoRequest placeInfoRequest = new PlaceInfoRequest();
         placeInfoRequest.setName("Test Place");
         placeInfoRequest.setCoordinates("Test Coordinates");

@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -52,7 +52,7 @@ class HistoryServiceImplTest {
     }
 
     @Test
-    public void testGetHistoryExistingHistory() {
+    void testGetHistoryExistingHistory() {
         History existingHistory = new History();
         existingHistory.setId(EXISTING_HISTORY_ID);
 
@@ -64,7 +64,7 @@ class HistoryServiceImplTest {
     }
 
     @Test
-    public void testGetHistoryWhenIdIsZero() {
+    void testGetHistoryWhenIdIsZero() {
         long id = 0L;
 
         try {
@@ -77,7 +77,7 @@ class HistoryServiceImplTest {
     }
 
     @Test
-    public void testGetHistoryNonExistingHistory() {
+    void testGetHistoryNonExistingHistory() {
         when(historyRepo.findById(NON_EXISTING_HISTORY_ID)).thenReturn(Optional.empty());
 
         CustomException exception = assertThrows(CustomException.class, () -> {
@@ -88,7 +88,7 @@ class HistoryServiceImplTest {
     }
 
     @Test
-    public void testGetAllHistories() {
+    void testGetAllHistories() {
         History history1 = new History();
         history1.setId(1L);
         History history2 = new History();
@@ -102,7 +102,7 @@ class HistoryServiceImplTest {
     }
 
     @Test
-    public void testCreateHistory() {
+    void testCreateHistory() {
 
         HistoryInfoRequest request = new HistoryInfoRequest();
         request.setHook("Test Hook");
@@ -122,7 +122,7 @@ class HistoryServiceImplTest {
 
 
     @Test
-    public void testUpdateHistory() {
+    void testUpdateHistory() {
         History history = new History();
         history.setId(1L);
         history.setHook("Old Hook");
@@ -168,7 +168,7 @@ class HistoryServiceImplTest {
     }
 
     @Test
-    public void testUpdateHistoryWhenIdIsZero() {
+    void testUpdateHistoryWhenIdIsZero() {
         long id = 0L;
         HistoryInfoRequest request = new HistoryInfoRequest();
 
@@ -182,7 +182,7 @@ class HistoryServiceImplTest {
     }
 
     @Test
-    public void testUpdateHistoryWhenHistoryIsNull() {
+    void testUpdateHistoryWhenHistoryIsNull() {
         long id = 1L;
         HistoryInfoRequest request = new HistoryInfoRequest();
 
@@ -194,7 +194,7 @@ class HistoryServiceImplTest {
     }
 
     @Test
-    public void testDeleteHistory() {
+    void testDeleteHistory() {
         Long historyId = 1L;
 
         doNothing().when(historyRepo).deleteById(historyId);
@@ -205,7 +205,7 @@ class HistoryServiceImplTest {
     }
 
     @Test
-    public void testConvertToHistory() {
+    void testConvertToHistory() {
         HistoryInfoRequest historyInfoRequest = new HistoryInfoRequest();
         historyInfoRequest.setHook("Test Hook");
         historyInfoRequest.setTail("Test Tail");
