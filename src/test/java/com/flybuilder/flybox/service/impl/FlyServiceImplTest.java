@@ -21,9 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -51,7 +50,7 @@ class FlyServiceImplTest {
     }
 
     @Test
-    public void testGetFlyExistingFly() {
+    void testGetFlyExistingFly() {
         Fly existingFly = new Fly();
         existingFly.setId(EXISTING_FLY_ID);
 
@@ -63,7 +62,7 @@ class FlyServiceImplTest {
     }
 
     @Test
-    public void testGetFlyWhenIdIsZero() {
+    void testGetFlyWhenIdIsZero() {
         long id = 0L;
 
         try {
@@ -76,7 +75,7 @@ class FlyServiceImplTest {
     }
 
     @Test
-    public void testGetFlyNonExistingFly() {
+    void testGetFlyNonExistingFly() {
         when(flyRepo.findById(NON_EXISTING_FLY_ID)).thenReturn(Optional.empty());
 
         CustomException exception = assertThrows(CustomException.class, () -> {
@@ -87,7 +86,7 @@ class FlyServiceImplTest {
     }
 
     @Test
-    public void testGetAllFlies() {
+    void testGetAllFlies() {
         Fly fly1 = new Fly();
         fly1.setId(1L);
         Fly fly2 = new Fly();
@@ -105,7 +104,7 @@ class FlyServiceImplTest {
     }
 
     @Test
-    public void testCreateFly() {
+    void testCreateFly() {
 
         FlyInfoRequest request = new FlyInfoRequest();
         request.setName("Test Fly");
@@ -125,7 +124,7 @@ class FlyServiceImplTest {
 
 
     @Test
-    public void testUpdateFly() {
+    void testUpdateFly() {
         Fly fly = new Fly();
         fly.setId(1L);
         fly.setName("Old Fly");
@@ -165,7 +164,7 @@ class FlyServiceImplTest {
     }
 
     @Test
-    public void testUpdateFlyWhenIdIsZero() {
+    void testUpdateFlyWhenIdIsZero() {
         long id = 0L;
         FlyInfoRequest request = new FlyInfoRequest();
 
@@ -179,7 +178,7 @@ class FlyServiceImplTest {
     }
 
     @Test
-    public void testUpdateFlyWhenFlyIsNull() {
+    void testUpdateFlyWhenFlyIsNull() {
         long id = 1L;
         FlyInfoRequest request = new FlyInfoRequest();
 
@@ -191,7 +190,7 @@ class FlyServiceImplTest {
     }
 
     @Test
-    public void testDeleteFly() {
+    void testDeleteFly() {
         Long flyId = 1L;
 
         doNothing().when(flyRepo).deleteById(flyId);
@@ -202,7 +201,7 @@ class FlyServiceImplTest {
     }
 
     @Test
-    public void testConvertToFly() {
+    void testConvertToFly() {
         FlyInfoRequest flyInfoRequest = new FlyInfoRequest();
         flyInfoRequest.setName("Test Fly");
         flyInfoRequest.setFlyType(FlyType.DRY);

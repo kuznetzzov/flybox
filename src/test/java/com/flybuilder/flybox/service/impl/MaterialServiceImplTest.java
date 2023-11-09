@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -51,7 +51,7 @@ class MaterialServiceImplTest {
     }
 
     @Test
-    public void testGetMaterialExistingMaterial() {
+    void testGetMaterialExistingMaterial() {
         Material existingMaterial = new Material();
         existingMaterial.setId(EXISTING_ID);
 
@@ -63,7 +63,7 @@ class MaterialServiceImplTest {
     }
 
     @Test
-    public void testGetMaterialWhenIdIsZero() {
+    void testGetMaterialWhenIdIsZero() {
         long id = 0L;
 
         try {
@@ -76,7 +76,7 @@ class MaterialServiceImplTest {
     }
 
     @Test
-    public void testGetMaterialNonExistingMaterial() {
+    void testGetMaterialNonExistingMaterial() {
         when(materialRepo.findById(NON_EXISTING_ID)).thenReturn(Optional.empty());
 
         CustomException exception = assertThrows(CustomException.class, () -> {
@@ -87,7 +87,7 @@ class MaterialServiceImplTest {
     }
 
     @Test
-    public void testGetAllMaterials() {
+    void testGetAllMaterials() {
         Material material1 = new Material();
         material1.setId(1L);
         Material material2 = new Material();
@@ -101,7 +101,7 @@ class MaterialServiceImplTest {
     }
 
     @Test
-    public void testCreateMaterial() {
+    void testCreateMaterial() {
 
         MaterialInfoRequest request = new MaterialInfoRequest();
         request.setName("Hen");
@@ -121,7 +121,7 @@ class MaterialServiceImplTest {
 
 
     @Test
-    public void testUpdateMaterial() {
+    void testUpdateMaterial() {
         Material material = new Material();
         material.setId(1L);
         material.setName("Old Material");
@@ -154,7 +154,7 @@ class MaterialServiceImplTest {
     }
 
     @Test
-    public void testUpdateMaterialWhenIdIsZero() {
+    void testUpdateMaterialWhenIdIsZero() {
         long id = 0L;
         MaterialInfoRequest request = new MaterialInfoRequest();
 
@@ -168,7 +168,7 @@ class MaterialServiceImplTest {
     }
 
     @Test
-    public void testUpdateMaterialWhenMaterialIsNull() {
+    void testUpdateMaterialWhenMaterialIsNull() {
         long id = 1L;
         MaterialInfoRequest request = new MaterialInfoRequest();
 
@@ -180,7 +180,7 @@ class MaterialServiceImplTest {
     }
 
     @Test
-    public void testDeleteMaterial() {
+    void testDeleteMaterial() {
         Long materialId = 1L;
 
         doNothing().when(materialRepo).deleteById(materialId);
@@ -191,7 +191,7 @@ class MaterialServiceImplTest {
     }
 
     @Test
-    public void testConvertToMaterial() {
+    void testConvertToMaterial() {
         MaterialInfoRequest materialInfoRequest = new MaterialInfoRequest();
         materialInfoRequest.setName("Test Material");
         materialInfoRequest.setDescription("Test Description");

@@ -24,7 +24,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -53,7 +54,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    public void testGetUserExistingUser() {
+    void testGetUserExistingUser() {
         User existingUser = new User();
         existingUser.setId(EXISTING_ID);
 
@@ -65,7 +66,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    public void testGetUserWhenIdIsZero() {
+    void testGetUserWhenIdIsZero() {
         long id = 0L;
 
         try {
@@ -78,7 +79,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    public void testGetUserNonExistingUser() {
+    void testGetUserNonExistingUser() {
         when(userRepo.findById(NON_EXISTING_ID)).thenReturn(Optional.empty());
 
         CustomException exception = assertThrows(CustomException.class, () -> {
@@ -89,7 +90,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    public void testGetAllUsers() {
+    void testGetAllUsers() {
         User user1 = new User();
         user1.setId(1L);
         User user2 = new User();
@@ -103,7 +104,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    public void testCreateUser() {
+    void testCreateUser() {
 
         UserInfoRequest request = new UserInfoRequest();
         request.setEmail("test@mail.ru");
@@ -123,7 +124,7 @@ class UserServiceImplTest {
 
 
     @Test
-    public void testUpdateUser() {
+    void testUpdateUser() {
         User user = new User();
         user.setId(1L);
         user.setEmail("oldemail@example.com");
@@ -155,14 +156,14 @@ class UserServiceImplTest {
         assertEquals("newemail@example.com", user.getEmail());
         assertEquals("newpassword", user.getPassword());
         assertEquals("newusername", user.getUsername());
-        assertEquals(25, user.getAge());
+        assertEquals(25, user.getAge().intValue());
         assertEquals(Gender.FEMALE, user.getGender());
         assertEquals(Role.ADMIN, user.getRole());
         assertEquals(Status.UPDATED, user.getStatus());
     }
 
     @Test
-    public void testUpdateUserWhenIdIsZero() {
+    void testUpdateUserWhenIdIsZero() {
         long id = 0L;
         UserInfoRequest request = new UserInfoRequest();
 
@@ -176,7 +177,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    public void testUpdateUserWhenUserIsNull() {
+    void testUpdateUserWhenUserIsNull() {
         long id = 1L;
         UserInfoRequest request = new UserInfoRequest();
 
@@ -188,7 +189,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    public void testDeleteUser() {
+    void testDeleteUser() {
         Long userId = 1L;
 
         doNothing().when(userRepo).deleteById(userId);
@@ -199,7 +200,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    public void testConvertToUser() {
+    void testConvertToUser() {
         UserInfoRequest userInfoRequest = new UserInfoRequest();
         userInfoRequest.setEmail("testemail@example.com");
         userInfoRequest.setPassword("testpassword");
